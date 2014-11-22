@@ -7,32 +7,9 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="stylesheet" href="css/stage.css">
+        <script data-main="js/main" src="js/require.js"></script>
     </head>
     <body>
-        <div id='game-container' data-game-state="loading">
-            <div class='game-state' id='game-state-loading'>
-                <div id='loading-heading'>LOADING...</div>
-            </div>
 
-            <div class='game-state' id='game-state-new'>
-                <div id='start-button'></div>
-            </div>
-
-            <div class='game-state' id='game-state-running'>
-                <canvas id="primary-canvas" width="768" height="1024"></canvas>
-            </div>
-
-            <div class='game-state' id='game-state-end'>
-            </div>
-        </div>
-
-        <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="js/lib/howler.min.js"></script>
-
-        <script type="text/javascript" src="js/Sprite.js"></script>
-        <script type="text/javascript" src="js/Stage.js"></script>
-
-        <script type="text/javascript" src="js/anslemAssets.js"></script>
-        <script type="text/javascript" src="js/anslem.client.js"></script>
     </body>
 </html>
