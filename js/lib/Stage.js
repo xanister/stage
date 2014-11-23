@@ -1,4 +1,4 @@
-define(['Sprite'], function (Sprite) {
+define(function () {
     /**
      * Basic stage for drawing to canvas
      * @returns {Stage}
@@ -16,21 +16,14 @@ define(['Sprite'], function (Sprite) {
          * @access public
          * @type {Number}
          */
-        this.currentFps = 0;
-
-        /**
-         * DOM canvas context
-         * @access public
-         * @type {Canvas.context}
-         */
-        this.canvasContext = false;
+        this.fps = 0;
 
         /**
          * Debug mode flag
          * @access public
          * @type {Boolean}
          */
-        this.debugMode = true;
+        this.debugMode = false;
 
         /**
          * Running flag
@@ -38,13 +31,6 @@ define(['Sprite'], function (Sprite) {
          * @type {Boolean}
          */
         this.running = false;
-
-        /**
-         * Target frames per second
-         * @access public
-         * @type {Number}
-         */
-        this.targetFps = 60;
 
         /**
          * Available sounds
@@ -72,7 +58,6 @@ define(['Sprite'], function (Sprite) {
 
             this.canvas.width = window.innerWidth > 0 ? window.innerWidth : screen.width;
             this.canvas.height = window.innerHeight > 0 ? window.innerHeight : screen.height;
-            this.canvasContext = this.canvas.getContext("2d");
         };
 
         /**
@@ -81,7 +66,6 @@ define(['Sprite'], function (Sprite) {
          * @param {Number} assetCount
          * @param {Function} loaderFunction
          * @param {Function} assetsLoadedCallback
-         * @returns {undefined}
          */
         Stage.prototype.loadAssets = function (assetCount, loaderFunction, assetsLoadedCallback) {
             loaderFunction(function () {
@@ -99,16 +83,18 @@ define(['Sprite'], function (Sprite) {
          */
         Stage.prototype.start = function (renderCallback) {
             this.running = true;
+            var ctx = this.canvas.getContext("2d");
             var self = this;
             var startTime = 0;
             function step(timestamp) {
-                var progress = timestamp - startTime;
-                startTime = timestamp;
-                self.currentFps = 1000 / progress;
-                self.canvasContext.clearRect(0, 0, self.canvas.width, self.canvas.height);
-                renderCallback();
-                if (self.debugMode)
-                    self.canvasContext.fillText("FPS: " + Math.round(this.currentFps), 5, 5);
+                ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+                renderCallback(ctx);
+                if (self.debugMode) {
+                    var progress = timestamp - startTime;
+                    startTime = timestamp;
+                    self.fps = 1000 / progress;
+                    ctx.fillText("FPS: " + Math.round(self.fps), 5, 5);
+                }
                 if (self.running)
                     window.requestAnimationFrame(step);
             }

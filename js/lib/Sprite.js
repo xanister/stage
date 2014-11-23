@@ -65,18 +65,16 @@ define(function () {
          * @param {Number} srcHeight
          */
         Sprite.prototype.draw = function (ctx, frame, tarX, tarY, width, height, srcX, srcY, srcWidth, srcHeight) {
-            frame = Math.floor(frame);
-            tarX = Math.floor(tarX);
-            tarY = Math.floor(tarY);
-            width = width ? Math.floor(width) : this.width;
-            height = height ? Math.floor(height) : this.height;
-            srcX = srcX ? Math.floor(srcX) : 0;
+            frame = Math.floor(frame || 0);
+            width = width || this.width;
+            height = height || this.height;
+            srcX = srcX || 0;
             if (this.singleImage)
                 srcX = Math.floor(srcX + (frame * this.width));
-            srcY = srcY ? Math.floor(srcY) : 0;
+            srcY = srcY || 0;
             srcWidth = srcWidth || this.width;
             srcHeight = srcHeight || this.height;
-            var img = this.singleImage ? this.images[0] : this.images[frame || 0];
+            var img = this.singleImage ? this.images[0] : this.images[frame];
             ctx.drawImage(img, srcX, srcY, srcWidth, srcHeight, tarX, tarY, width, height);
         };
 
@@ -90,7 +88,7 @@ define(function () {
          * @param {Number} tiledHeight
          */
         Sprite.prototype.drawTiled = function (ctx, frame, tarX, tarY, tiledWidth, tiledHeight) {
-            var img = this.singleImage ? this.images[0] : this.images[frame || 0];
+            var img = this.singleImage ? this.images[0] : this.images[frame];
             ctx.rect(tarX, tarY, tiledWidth, tiledHeight);
             ctx.fillStyle = ctx.createPattern(img, "repeat");
             ctx.fill();
@@ -118,6 +116,7 @@ define(function () {
 
         /**
          * Loads images for sprite
+         * @access protected
          * @param {String} imagePath
          * @param {Number} imageCount
          * @param {function} imagesLoadedCallback
@@ -139,7 +138,8 @@ define(function () {
         };
 
         /**
-         *
+         * Return zero padded number
+         * @access protected
          * @param {String} subject
          * @param {Number} width
          * @param {Number} char
@@ -153,7 +153,7 @@ define(function () {
 
         /**
          * Sprite images
-         * @access protected
+         * @access public
          * @var {Array}
          */
         this.images = this.loadImages(imagePath, this.singleImage || !frameCount ? 1 : frameCount, imagesLoadedCallback || false);
